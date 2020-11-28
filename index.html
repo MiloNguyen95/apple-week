@@ -38,21 +38,26 @@
             <form id="userInfoForm">
               <div class="form-group">
                 <label for="full-name" class="col-form-label">Họ và tên:</label>
-                <input type="text" class="form-control" name="fullname" id="full-name" />
+                <input type="text" required class="form-control" name="fullname" id="full-name" />
               </div>
               <div class="form-group">
                 <label for="phone" class="col-form-label">Số điện thoại:</label>
-                <input type="text" class="form-control" name="phone" id="phone"></textarea>
+                <input type="text" required class="form-control" name="phone" id="phone"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="provider" class="col-form-label">Nhà mạng của thuê bao:</label>
+                <input type="text" required class="form-control" name="provider" id="provider"></textarea>
               </div>
               <div class="form-group">
                 <label for="super-market" class="col-form-label"
                   >Siêu thị mua hàng:</label
                 >
-                <input type="text" class="form-control" name="supermarket" id="super-market"></textarea>
+                <input type="text" required class="form-control" name="mart" id="super-market"></textarea>
               </div>
               <div class="form-group">
                 <label for="bill-image">Hóa đơn mua hàng:</label>
                 <input
+                required
                   type="file"
                   name="billimage"
                   accept="image/*"
@@ -69,24 +74,20 @@
       </div>
     </div>
     <div class="app-bg">
+      <img src="./assets/img/logo.png" width="50%" style="margin-bottom: 5%"/>
+      <h2>TUẦN LỄ TÁO WASHINGTON</h2>
+      <h3 style="margin-bottom: 10%">Vòng quay may mắn</h3>
       <div id="canvas-container">
         <canvas id="canvas">
           <p style="color: white" align="center">
             Sorry, your browser doesn't support canvas. Please try another.
           </p>
         </canvas>
-        <div id="arrow"><i class="fas fa-arrow-down"></i></div>
+        <img id="arrow" src="./assets/img/arrow.png" />
       </div>
       <div>
         <button id="spin_start" class="btn btn-primary" onClick="startSpin();">
           Quay ngay
-        </button>
-        <button
-          id="spin_stop"
-          class="btn btn-danger hide"
-          onClick="stopSpin();"
-        >
-          Dừng lại
         </button>
         <button
           id="spin_reset"

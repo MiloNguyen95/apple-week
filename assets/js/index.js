@@ -9,30 +9,32 @@ for (let i = 0; i < buttons.length; i++) {
     buttons[i].style.fontSize = size
     console.log(buttons[i].style)
 }
+let containerWidth = window.innerWidth > 375 ? 375 : window.innerWidth
 
-canvas.height = canvas.width = window.innerWidth * 0.56
-arrow.style.top = `${-canvas.width / 40}px`
-arrow.style.fontSize = `${canvas.width / 20}px`
-arrow.style.left = `${canvas.width / 2 - canvas.width / 40}px`
+
+canvas.height = canvas.width = containerWidth *0.9
+arrow.style.top = `${-canvas.width / 15}px`
+arrow.style.left = `${canvas.width / 2 - canvas.width / 20}px`
 //Thông số vòng quay
 let duration = 2; //Thời gian kết thúc vòng quay
 let spins = 3; //Quay nhanh hay chậm 3, 8, 15
 let theWheel = new Winwheel({
     'numSegments': 9,     // Chia 8 phần bằng nhau
-    'outerRadius': window.innerWidth * 0.25,   // Đặt bán kính vòng quay
-    'textFontSize': window.innerWidth / 50,    // Đặt kích thước chữ
+    'outerRadius': containerWidth * 0.4,   // Đặt bán kính vòng quay
+    'textFontSize':containerWidth / 30,    // Đặt kích thước chữ
+    'textFontFamily': 'Texturina',
     'rotationAngle': 0,     // Đặt góc vòng quay từ 0 đến 360 độ.
     'segments':        // Các thành phần bao gồm màu sắc và văn bản.
         [
-            { 'fillStyle': '#e7706f', 'text': 'Voucher GotIt 50K' },
-            { 'fillStyle': '#89f26e', 'text': 'Bút' },
-            { 'fillStyle': '#eae56f', 'text': 'Mã nạp 10K' },
-            { 'fillStyle': '#e7706f', 'text': 'Sổ tay' },
-            { 'fillStyle': '#89f26e', 'text': 'Mã nạp 50K' },
-            { 'fillStyle': '#eae56f', 'text': 'Bong bóng' },
-            { 'fillStyle': '#e7706f', 'text': 'Mã nạp 20K' },
-            { 'fillStyle': '#89f26e', 'text': 'Quạt tay' },
-            { 'fillStyle': '#eae56f', 'text': 'Túi vải cao cấp' },
+            { 'fillStyle': '#aa0d32', 'text': 'Voucher GotIt 50K', 'textFillStyle': '#ffffff' },
+            { 'fillStyle': '#ffffff', 'text': 'Bút' },
+            { 'fillStyle': '#ffb347', 'text': 'Mã nạp 10K' },
+            { 'fillStyle': '#aa0d32', 'text': 'Sổ tay', 'textFillStyle': '#ffffff' },
+            { 'fillStyle': '#ffffff', 'text': 'Mã nạp 50K' },
+            { 'fillStyle': '#ffb347', 'text': 'Bong bóng' },
+            { 'fillStyle': '#aa0d32', 'text': 'Mã nạp 20K', 'textFillStyle': '#ffffff' },
+            { 'fillStyle': '#ffffff', 'text': 'Quạt tay' },
+            { 'fillStyle': '#ffb347', 'text': 'Túi vải cao cấp' },
         ],
     'animation': {
         'type': 'spinOngoing', //spinToStop, spinOngoing
@@ -63,15 +65,14 @@ function playSound() {
 function statusButton(status) {
     if (status == 1) { //trước khi quay
         document.getElementById('spin_start').classList.remove("hide");
-        document.getElementById('spin_stop').classList.add("hide");
         document.getElementById('spin_reset').classList.add("hide");
     } else if (status == 2) { //đang quay
         document.getElementById('spin_start').classList.add("hide");
-        document.getElementById('spin_stop').classList.remove("hide");
-        document.getElementById('spin_reset').classList.add("hide");
+        document.getElementById('spin_reset').disabled = true
+        document.getElementById('spin_reset').classList.remove("hide");
     } else if (status == 3) { //kết quả
         document.getElementById('spin_start').classList.add("hide");
-        document.getElementById('spin_stop').classList.add("hide");
+        document.getElementById('spin_reset').disabled = false
         document.getElementById('spin_reset').classList.remove("hide");
     } else {
         alert('Các giá trị của status: 1, 2, 3');
@@ -98,6 +99,7 @@ function startSpin() {
 
         //Hàm bắt đầu quay
         theWheel.startAnimation();
+        setTimeout(stopSpin, 3000)
     }
 }
 
@@ -121,13 +123,13 @@ function stopSpin() {
 
         //Khóa vòng quay
         wheelSpinning = true;
+        let stop = Math.floor((Math.random() * 360));
+        theWheel.animation.stopAngle = stop;
     }
 }
 
 //stopAngle
 function stopAngle() {
-    let stop = Math.floor((Math.random() * 360));
-    theWheel.animation.stopAngle = stop;
 }
 
 //Result
@@ -144,7 +146,6 @@ function alertPrize(indicatedSegment) {
             alert("Chúc mừng bạn trúng: " + indicatedSegment.text);
             break;
     }
-    
 
     //CSS hiển thị button
     statusButton(3);
@@ -162,14 +163,14 @@ function resetWheel() {
     wheelSpinning = false;
 }
 
-userInfoForm.onsubmit = (e) => {
+userInfoForm.onsubmit = async (e) => {
     e.preventDefault();
-    let response = await fetch('url', {
+    let response = await fetch('https://hb-sap-api.herokuapp.com/api/v1/user', {
         method: 'POST',
         body: new FormData(userInfoForm)
-      });
-  
-      let result = await response.json();
-  
-      alert(result.message);
+    });
+
+    let result = await response.json();
+
+    alert(result.message);
 }

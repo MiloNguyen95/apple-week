@@ -1,12 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sansita+Swashed&family=Texturina:wght@300&display=swap');
 .app-bg {
     height: 100vh;
     display: flex;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
     flex-direction: column;
+    background-image: url("../img/bg.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    z-index: 0;
 }
+
+.app-bg::before {
+    content: "";
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    background-color: rgba(255,255,255,0.65);
+    z-index: -1;
+}
+
 #canvas-container {
-    margin-top: -25%;
     position: relative;
 }
 
@@ -16,13 +36,35 @@
 }
 
 button {
-    padding: 5px;
+    padding: 8px 32px !important;
+    font-size: 1rem !important; 
 }
 
 .hide {
     display: none !important;
 }
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+canvas {
+    font-family: 'Sansita Swashed', cursive !important;
+}
+
+h2 {
+    font-family: 'Josefin Sans', sans-serif !important;
+    font-size: 1.5rem !important;
+    color: #aa0d32;
+}
+
+h3{
+    font-family: 'Source Sans Pro', sans-serif !important;
+    color: #aa0d32;
+}
+
+#arrow {
+    transform: rotate(90deg);
+    width: 3rem;
+}
+
+.btn-primary {
+    background-color: #ffb347 !important;
+    border: none !important;
 }
