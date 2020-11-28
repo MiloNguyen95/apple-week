@@ -1,0 +1,28 @@
+.app-bg {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+#canvas-container {
+    margin-top: -25%;
+    position: relative;
+}
+
+#arrow {
+    position: absolute;
+    font-weight: bolder;
+}
+
+button {
+    padding: 5px;
+}
+
+.hide {
+    display: none !important;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
