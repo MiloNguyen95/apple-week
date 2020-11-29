@@ -104,7 +104,7 @@ async function stopSpin() {
             'callbackFinished': alertPrize,
         };
 
-        const response = await fetch('http://localhost:8080/api/v1/count', {
+        const response = await fetch('https://hb-sap-api.herokuapp.com/api/v1/count', {
             method: 'GET'
         });
         const countingValues = await response.json()
@@ -167,7 +167,7 @@ async function alertPrize(indicatedSegment) {
             $('#userInfoModal').modal()
             break;
         default:
-            await fetch('http://localhost:8080/api/v1/count', {
+            await fetch('https://hb-sap-api.herokuapp.com/api/v1/count', {
                 method: 'POST',
                 body: {
                     'prize': message
@@ -198,7 +198,7 @@ userInfoForm.onsubmit = async (e) => {
     resetWheel()
     let formData = new FormData(userInfoForm)
     formData.append('prize', prize)
-    let response = await fetch('http://localhost:8080/api/v1/user', {
+    let response = await fetch('https://hb-sap-api.herokuapp.com/api/v1/user', {
         method: 'POST',
         body: formData
     });
