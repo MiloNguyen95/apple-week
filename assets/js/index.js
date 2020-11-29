@@ -10,16 +10,16 @@ for (let i = 0; i < buttons.length; i++) {
 let containerWidth = window.innerWidth > 375 ? 375 : window.innerWidth
 
 
-canvas.height = canvas.width = containerWidth *0.9
+canvas.height = canvas.width = containerWidth * 0.9
 arrow.style.top = `${-canvas.width / 15}px`
 arrow.style.left = `${canvas.width / 2 - canvas.width / 20}px`
-
+let prize = null;
 let duration = 2;
 let spins = 3;
 let theWheel = new Winwheel({
     'numSegments': 9,
     'outerRadius': containerWidth * 0.4,
-    'textFontSize':containerWidth / 30,
+    'textFontSize': containerWidth / 30,
     'textFontFamily': 'Texturina',
     'rotationAngle': 0,
     'segments':
@@ -93,7 +93,7 @@ function startSpin() {
     }
 }
 
-function stopSpin() {
+async function stopSpin() {
     if (wheelSpinning == false) {
         theWheel.animation = {
             'type': 'spinToStop',
@@ -104,22 +104,75 @@ function stopSpin() {
             'callbackFinished': alertPrize,
         };
 
+        const response = await fetch('http://localhost:8080/api/v1/count', {
+            method: 'GET'
+        });
+        const countingValues = await response.json()
+        let shouldContinue = true;
+        let stop = 0;
+        while (shouldContinue) {
+            stop = Math.floor(Math.random() * (359 - 0)) + 0;
+
+            const prizeIndex = Math.floor(stop / 40);
+
+            switch (prizeIndex) {
+                case 0:
+                    shouldContinue = parseInt(countingValues["GI50"]) === 0
+                    break;
+                case 1:
+                    shouldContinue = parseInt(countingValues["Bút"]) === 0
+                    break;
+                case 2:
+                    shouldContinue = parseInt(countingValues["Đt10"]) === 0
+                    break;
+                case 3:
+                    shouldContinue = parseInt(countingValues["Sổ"]) === 0
+                    break;
+                case 4:
+                    shouldContinue = parseInt(countingValues["ĐT50"]) === 0
+                    break;
+                case 5:
+                    shouldContinue = parseInt(countingValues["Bong bóng"]) === 0
+                    break;
+                case 6:
+                    shouldContinue = parseInt(countingValues["ĐT20"]) === 0
+                    break;
+                case 7:
+                    shouldContinue = parseInt(countingValues["Quạt"]) === 0
+                    break;
+                case 8:
+                    shouldContinue = parseInt(countingValues["Túi"]) === 0
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        theWheel.animation.stopAngle = stop;
+
         theWheel.startAnimation();
 
         wheelSpinning = true;
-        let stop = Math.floor((Math.random() * 360));
-        theWheel.animation.stopAngle = stop;
     }
 }
 
-function alertPrize(indicatedSegment) {
+async function alertPrize(indicatedSegment) {
     const message = indicatedSegment.text;
     switch (message) {
         case 'Voucher GotIt 50K':
         case 'Mã nạp 10K':
         case 'Mã nạp 50K':
         case 'Mã nạp 20K':
+            prize = message
             $('#userInfoModal').modal()
+            break;
+        default:
+            await fetch('http://localhost:8080/api/v1/count', {
+                method: 'POST',
+                body: {
+                    'prize': message
+                }
+            });
             break;
     }
     alert("Chúc mừng bạn trúng: " + indicatedSegment.text);
@@ -143,12 +196,16 @@ userInfoForm.onsubmit = async (e) => {
 
     $('#userInfoModal').modal('hide')
     resetWheel()
-    let response = await fetch('https://hb-sap-api.herokuapp.com/api/v1/user', {
+    let formData = new FormData(userInfoForm)
+    formData.append('prize', prize)
+    let response = await fetch('http://localhost:8080/api/v1/user', {
         method: 'POST',
-        body: new FormData(userInfoForm)
+        body: formData
     });
 
-    let result = await response.json();
-
-    alert(result.message);
+    if (response.status === 500 || response.status === 406) {
+        alert("Gửi thông tin không thành công")
+    } else {
+        alert("Gửi thông tin thành công")
+    }
 }
