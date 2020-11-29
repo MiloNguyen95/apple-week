@@ -142,10 +142,8 @@ function alertPrize(indicatedSegment) {
         case 'Mã nạp 20K':
             $('#userInfoModal').modal()
             break;
-        default:
-            alert("Chúc mừng bạn trúng: " + indicatedSegment.text);
-            break;
     }
+    alert("Chúc mừng bạn trúng: " + indicatedSegment.text);
 
     //CSS hiển thị button
     statusButton(3);
@@ -165,6 +163,9 @@ function resetWheel() {
 
 userInfoForm.onsubmit = async (e) => {
     e.preventDefault();
+
+    $('#userInfoModal').modal('hide')
+    resetWheel()
     let response = await fetch('https://hb-sap-api.herokuapp.com/api/v1/user', {
         method: 'POST',
         body: new FormData(userInfoForm)
