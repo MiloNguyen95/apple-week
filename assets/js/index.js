@@ -70,7 +70,7 @@ function statusButton(status) {
         document.getElementById('spin_reset').disabled = false
         document.getElementById('spin_reset').classList.remove("hide");
     } else {
-        alert('Các giá trị của status: 1, 2, 3');
+        alert('Các giá trị của status: 1, 2, 31');
     }
 }
 statusButton(1);
