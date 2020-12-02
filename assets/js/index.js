@@ -167,7 +167,7 @@ async function alertPrize(indicatedSegment) {
             $('#userInfoModal').modal()
             break;
         default:
-            await fetch('http://localhost:8080/api/v1/count', {
+            await fetch('https://hb-sap-api.herokuapp.com/api/v1/count', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
