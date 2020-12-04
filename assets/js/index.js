@@ -203,7 +203,8 @@ userInfoForm.onsubmit = async (e) => {
     formData.append('prize', prize)
     let response = await fetch('http://appleweek.ongdev.com/api/v1/user', {
         headers: {
-            "cache-control": "no-cache"
+            "cache-control": "no-cache",
+            'Content-Type': 'multipart/form-data',
         },
         method: 'POST',
         cache: false,
