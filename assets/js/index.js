@@ -3,6 +3,7 @@ const buttons = document.getElementsByTagName("button")
 const arrow = document.getElementById("arrow")
 
 
+
 for (let i = 0; i < buttons.length; i++) {
     let size = `${window.innerWidth / 50}px`
     buttons[i].style.fontSize = size
@@ -202,15 +203,12 @@ userInfoForm.onsubmit = async (e) => {
     let formData = new FormData(userInfoForm)
     formData.append('prize', prize)
     try {
-        let response = await fetch('http://appleweek.ongdev.com/api/v1/user', {
+        const response = await axios.post('http://appleweek.ongdev.com/api/v1/user', formData,{
             headers: {
-                "cache-control": "no-cache",
-                'Content-Type': 'multipart/form-data',
-            },
-            method: 'POST',
-            cache: false,
-            body: formData
-        });
+                'Content-Type': 'multipart/form-data'
+              },
+            cache: false
+        })
         if (response.status === 500 || response.status === 406) {
             alert("Gửi thông tin không thành công")
         } else {
