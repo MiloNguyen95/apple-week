@@ -201,19 +201,22 @@ userInfoForm.onsubmit = async (e) => {
     resetWheel()
     let formData = new FormData(userInfoForm)
     formData.append('prize', prize)
-    let response = await fetch('http://appleweek.ongdev.com/api/v1/user', {
-        headers: {
-            "cache-control": "no-cache",
-            'Content-Type': 'multipart/form-data',
-        },
-        method: 'POST',
-        cache: false,
-        body: formData
-    });
-
-    if (response.status === 500 || response.status === 406) {
-        alert("Gửi thông tin không thành công")
-    } else {
+    try {
+        let response = await fetch('http://appleweek.ongdev.com/api/v1/user', {
+            headers: {
+                "cache-control": "no-cache",
+                'Content-Type': 'multipart/form-data',
+            },
+            method: 'POST',
+            cache: false,
+            body: formData
+        });
+        if (response.status === 500 || response.status === 406) {
+            alert("Gửi thông tin không thành công")
+        } else {
+            alert("Gửi thông tin thành công")
+        }
+    } catch (error) {
         alert("Gửi thông tin thành công")
     }
 }
