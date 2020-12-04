@@ -206,6 +206,7 @@ userInfoForm.onsubmit = async (e) => {
             "cache-control": "no-cache"
         },
         method: 'POST',
+        cache: false,
         body: formData
     });
 
